@@ -2,7 +2,7 @@ name: Deploy zhy'sspace preview
 
 on:
   push:
-    branches: [main]
+    branches: [main, gh-pages]
   workflow_dispatch:
 
 permissions:
@@ -15,24 +15,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build Vite site
+  deploy:
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout repository
+      # The pre-built site lives on the gh-pages branch (committed dist).
+      # Checking it out here avoids running npm install/build in CI.
+      - name: Checkout built site
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm install --no-fund --no-audit
-
-      - name: Build production bundle
-        run: npm run build
+          ref: gh-pages
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -40,16 +35,8 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: .
 
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: Deploy artifact
         id: deployment
         uses: actions/deploy-pages@v4
