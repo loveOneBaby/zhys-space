@@ -128,3 +128,9 @@ hello@zhyspace.design
 ## 设计说明
 
 视觉方向：暖橙、暖黄、白色、透明玻璃材质；避免普通模板感，强调创意机构官网式的空间感、留白、慢速动效与高端视觉层次。
+
+
+## 相关仓库
+
+- [ge](https://github.com/loveOneBaby/ge)：张海云全栈工程师方向作品集（另一条作品集线，Render 部署）
+- [ge-preview](https://github.com/loveOneBaby/ge-preview)：`ge` 的 GitHub Pages 静态预览
